@@ -1,0 +1,398 @@
+{
+  "template": "template-converter.xlsx",
+  "allowedSheets": [
+    "Заполняет конвертор НЕ ТРОГАТЬ!",
+    "HDR и PR   "
+  ],
+  "writePolicy": {
+    "mode": "data-only-two-sheets",
+    "preserveCellTypes": true,
+    "preserveFormatting": false,
+    "preserveCharts": false,
+    "preserveImages": false,
+    "preserveOtherSheets": false
+  },
+  "reportMetadata": {
+    "sheet": "Заполняет конвертор НЕ ТРОГАТЬ!",
+    "period": "Z1",
+    "reportName": "Z2",
+    "startDate": "Z3",
+    "endDate": "Z4"
+  },
+  "mappings": [
+    {
+      "sourceId": "monitor",
+      "sourcePath": "/{farmId}/user/analytics/monitor",
+      "sheet": "Заполняет конвертор НЕ ТРОГАТЬ!",
+      "range": "B2:B8",
+      "write": "values-only",
+      "pageAction": "none",
+      "rowLookup": "normalized-label",
+      "valueSelection": "latest-available",
+      "fields": [
+        "Кол-во коров в стаде",
+        "% Стельных",
+        "% Первотелок",
+        "Кол-во БРАК коровы",
+        "Средний надой ДЗ",
+        "Средние дни в доении (без сух.)",
+        "% Брака коровы"
+      ]
+    },
+    {
+      "sourceId": "hdr-pr",
+      "sourcePath": "/{farmId}/user/analytics/reproduction/hdr-and-pr/reproductionHdrPrReport_2204",
+      "sheet": "HDR и PR   ",
+      "range": "A3:I20",
+      "write": "values-only",
+      "period": "365-days-ending-user-end",
+      "includeHeader": false,
+      "excludeRows": [
+        "Всего"
+      ],
+      "columnMapping": [
+        { "source": "Дата", "targetColumn": "A" },
+        { "source": "Пригодные к осемен.", "targetColumn": "B" },
+        { "source": "Осемен.", "targetColumn": "C" },
+        { "source": "Выявление (HDR)", "targetColumn": "D" },
+        { "source": "Пригодные к стельности", "targetColumn": "E" },
+        { "source": "Стельные", "targetColumn": "F" },
+        { "source": "Стельность (PR)", "targetColumn": "G" },
+        { "source": "Оплодотворяемость (CR)", "targetColumn": "H" },
+        { "source": "Аборты", "targetColumn": "I" }
+      ]
+    },
+    {
+      "sourceId": "weekly-events",
+      "sourcePath": "/{farmId}/user/analytics/events/events/customEventsReport_7118",
+      "sheet": "Заполняет конвертор НЕ ТРОГАТЬ!",
+      "range": "J3:Q28",
+      "write": "values-only",
+      "period": "user",
+      "includeHeader": false,
+      "rowMapping": "source-order",
+      "copyRowLabels": true,
+      "sourceColumnSelection": "first-column-and-seven-period-columns",
+      "excludeLastSourceColumn": true,
+      "includeSummaryRow": true,
+      "maximumRows": 26,
+      "overflowPolicy": "error"
+    },
+    {
+      "sourceId": "sheet2-events-5303",
+      "sourcePath": "/{farmId}/user/analytics/events/events/customEventsReport_5303",
+      "sheet": "Заполняет конвертор НЕ ТРОГАТЬ!",
+      "range": "A31:C60",
+      "write": "values-only",
+      "period": "user",
+      "settingsArea": "table",
+      "includeHeader": false,
+      "rowMapping": "source-order",
+      "columnMapping": "source-order",
+      "excludeRows": [
+        "Всего"
+      ],
+      "maximumRows": 30,
+      "overflowPolicy": "error"
+    },
+    {
+      "sourceId": "sheet2-events-5304",
+      "sourcePath": "/{farmId}/user/analytics/events/events/customEventsReport_5304",
+      "sheet": "Заполняет конвертор НЕ ТРОГАТЬ!",
+      "range": "E31:F74",
+      "write": "values-only",
+      "period": "user",
+      "settingsArea": "table",
+      "includeHeader": false,
+      "rowMapping": "source-order",
+      "columnMapping": "source-order",
+      "excludeRows": [
+        "Всего"
+      ],
+      "maximumRows": 44,
+      "overflowPolicy": "error"
+    },
+    {
+      "sourceId": "first-insemination",
+      "sourcePath": "/{farmId}/user/blueprint/blueprint_154150",
+      "sheet": "Заполняет конвертор НЕ ТРОГАТЬ!",
+      "range": "H31:J129",
+      "write": "values-only",
+      "period": "user",
+      "includeHeader": false,
+      "rowMapping": "source-order",
+      "columnMapping": [
+        { "sourceKind": "COW_IDENTIFIER", "sourceExample": "Номер животного", "targetColumn": "H", "targetField": "ID" },
+        { "sourceKind": "DATE_OF_EVENT", "sourceExample": "Дата 1 осеменения тек.лакт", "targetColumn": "I", "targetField": "HDAT" },
+        { "sourceKind": "DATE_MINUS_DATE", "sourceExample": "Дни доения при 1 осем тек.лакт", "targetColumn": "J", "targetField": "DIMFB" }
+      ],
+      "maximumRows": 99,
+      "overflowPolicy": "error"
+    },
+    {
+      "sourceId": "second-insemination",
+      "sourcePath": "/{farmId}/user/blueprint/blueprint_154149",
+      "sheet": "Заполняет конвертор НЕ ТРОГАТЬ!",
+      "range": "L31:N129",
+      "write": "values-only",
+      "period": "user",
+      "includeHeader": false,
+      "rowMapping": "source-order",
+      "columnMapping": [
+        { "sourceKind": "COW_IDENTIFIER", "sourceExample": "Номер животного", "targetColumn": "L", "targetField": "ID" },
+        { "sourceKind": "DATE_OF_EVENT", "sourceExample": "Дата 2 осеменения тек.лакт", "targetColumn": "M", "targetField": "HDAT" },
+        { "sourceKind": "DATE_MINUS_DATE", "sourceExample": "Дни доения при 2 осем тек.лакт", "targetColumn": "N", "targetField": "DIMSB" }
+      ],
+      "maximumRows": 99,
+      "overflowPolicy": "error"
+    },
+    {
+      "sourceId": "calving-result",
+      "sourcePath": "/{farmId}/user/analytics/events/calvings/calvingEventsReport_2992",
+      "sheet": "Заполняет конвертор НЕ ТРОГАТЬ!",
+      "range": "A79:D85",
+      "write": "values-only",
+      "period": "user",
+      "settingsArea": "table",
+      "includeHeader": false,
+      "excludeRows": [
+        "Всего"
+      ],
+      "rowMapping": "source-order",
+      "columnMapping": [
+        { "source": "День", "targetColumn": "A" },
+        { "source": "Число отёлов", "targetColumn": "B" },
+        { "source": "Родилось тёлок", "targetColumn": "C" },
+        { "source": "Родилось быков", "targetColumn": "D" }
+      ],
+      "maximumRows": 7,
+      "overflowPolicy": "error"
+    },
+    {
+      "sourceId": "calf-retirement-6-months",
+      "sourcePath": "/{farmId}/user/analytics/events/events/customEventsReport_5305",
+      "sheet": "Заполняет конвертор НЕ ТРОГАТЬ!",
+      "range": "A90:C122",
+      "write": "values-only",
+      "period": "30-days-ending-user-end",
+      "settingsArea": "table",
+      "includeHeader": false,
+      "excludeRows": [
+        "Всего"
+      ],
+      "rowMapping": "source-order",
+      "columnMapping": [
+        { "source": "Дата выбытия", "targetColumn": "A" },
+        { "source": "Продажа", "targetColumn": "B" },
+        { "source": "Падёж", "targetColumn": "C" }
+      ],
+      "maximumRows": 33,
+      "overflowPolicy": "error"
+    },
+    {
+      "sourceId": "retirement-60-days-year",
+      "sourcePath": "/{farmId}/user/analytics/events/events/customEventsReport_5306",
+      "sheet": "Заполняет конвертор НЕ ТРОГАТЬ!",
+      "range": "A126:E141",
+      "write": "values-only",
+      "period": "365-days-ending-user-end",
+      "settingsArea": "table",
+      "includeHeader": false,
+      "excludeRows": [
+        "Всего"
+      ],
+      "rowSelection": "latest",
+      "rowLimit": 16,
+      "rowMapping": "source-order",
+      "columnMapping": [
+        { "source": "Дата начала тек.лакт", "targetColumn": "A", "targetField": "Месяц и год отёла" },
+        { "source": "Отел", "targetColumn": "B" },
+        { "source": "Падёж", "targetColumn": "C" },
+        { "source": "Аборт", "targetColumn": "D" },
+        { "source": "Продажа", "targetColumn": "E" }
+      ],
+      "maximumRows": 16,
+      "overflowPolicy": "error"
+    },
+    {
+      "sourceId": "retirement-60-days-milking",
+      "sourcePath": "/{farmId}/user/analytics/events/events/customEventsReport_5307",
+      "sheet": "Заполняет конвертор НЕ ТРОГАТЬ!",
+      "range": "S3:U39",
+      "write": "values-only",
+      "period": "30-days-ending-user-end",
+      "settingsArea": "table",
+      "includeHeader": false,
+      "excludeRows": [
+        "Всего"
+      ],
+      "rowMapping": "source-order",
+      "columnMapping": [
+        { "source": "Дата выбытия", "targetColumn": "S" },
+        { "source": "Продажа", "targetColumn": "T" },
+        { "source": "Падёж", "targetColumn": "U" }
+      ],
+      "maximumRows": 37,
+      "overflowPolicy": "error"
+    },
+    {
+      "sourceId": "milk-deviation",
+      "sourcePath": "/{farmId}/user/analytics/milking/by-herd/customMilkingReport_4019",
+      "sheet": "Заполняет конвертор НЕ ТРОГАТЬ!",
+      "range": "S43:U54",
+      "write": "values-only",
+      "period": "12-days-ending-user-end",
+      "settingsArea": "table",
+      "includeHeader": false,
+      "sourceOrientation": "horizontal",
+      "targetOrientation": "vertical",
+      "columnMapping": [
+        { "source": "Дата", "targetColumn": "S" },
+        { "source": "Голов", "targetColumn": "T", "emptyValue": 0 },
+        { "source": "Надой", "targetColumn": "U", "emptyValue": 0 }
+      ],
+      "maximumRows": 12,
+      "overflowPolicy": "error"
+    },
+    {
+      "sourceId": "youngstock-survival",
+      "sourcePath": "/{farmId}/user/analytics/custom-reports/customReport_23732/zjeEcUenw7wmZ7Cm8W",
+      "sheet": "Заполняет конвертор НЕ ТРОГАТЬ!",
+      "range": "S59:V64",
+      "write": "values-only",
+      "period": "none",
+      "includeHeader": false,
+      "dataSource": "pivot-table",
+      "excludeTotalRow": true,
+      "rowSelection": "latest",
+      "rowLimit": 6,
+      "columnMapping": [
+        { "source": "ММГГ даты рождения", "targetColumn": "S", "valueTransform": "year-month-to-first-day-date" },
+        { "sourcePivotValue": 0, "targetColumn": "T" },
+        { "sourcePivotValue": 1, "targetColumn": "U" },
+        { "sourcePivotValue": null, "targetColumn": "V", "targetField": "Итого" }
+      ],
+      "maximumRows": 6,
+      "overflowPolicy": "error"
+    },
+    {
+      "sourceId": "livestock-forecast-milk",
+      "sourcePath": "/{farmId}/user/analytics/livestock-forecast?farmId=null",
+      "sheet": "Заполняет конвертор НЕ ТРОГАТЬ!",
+      "range": "S68:T79",
+      "write": "values-only",
+      "period": "none",
+      "table": "Прогноз поголовья на 12 месяцев",
+      "expandedGroup": "Коровы",
+      "rowMapping": "forecast-month-order",
+      "rowLimit": 12,
+      "columnMapping": [
+        { "source": "Дойные, всего", "targetColumn": "S" },
+        { "source": "Надой на голову, кг", "targetColumn": "T" }
+      ],
+      "maximumRows": 12,
+      "overflowPolicy": "error"
+    },
+    {
+      "sourceId": "livestock-forecast-herd",
+      "sourcePath": "/{farmId}/user/analytics/livestock-forecast?farmId=null",
+      "sheet": "Заполняет конвертор НЕ ТРОГАТЬ!",
+      "range": "X68:X79",
+      "write": "values-only",
+      "period": "none",
+      "table": "Прогноз поголовья на 12 месяцев",
+      "rowMapping": "forecast-month-order",
+      "rowLimit": 12,
+      "columnMapping": [
+        { "source": "Коровы", "targetColumn": "X" }
+      ],
+      "maximumRows": 12,
+      "overflowPolicy": "error"
+    },
+    {
+      "sourceId": "missed-insemination",
+      "sourcePath": "/{farmId}/user/blueprint/blueprint_137585",
+      "sheet": "Заполняет конвертор НЕ ТРОГАТЬ!",
+      "ranges": [
+        "A144:D442",
+        "E144:H442"
+      ],
+      "write": "values-only",
+      "period": "none",
+      "includeHeader": false,
+      "rowMapping": "source-order",
+      "split": {
+        "mode": "halves",
+        "oddRow": "first-block",
+        "firstRange": "A144:D442",
+        "secondRange": "E144:H442"
+      },
+      "columnMapping": [
+        { "sourceKind": "COW_IDENTIFIER", "sourceExample": "Номер животного", "targetColumns": ["A", "E"] },
+        { "sourceKind": "DAYS_IN_MILK", "sourceExample": "Дни доения", "targetColumns": ["B", "F"] },
+        { "sourceKind": "CURRENT_LACTATION", "sourceExample": "Лактация", "targetColumns": ["C", "G"] },
+        { "sourceKind": "COW_STATE", "sourceExample": "Статус", "targetColumns": ["D", "H"] }
+      ],
+      "maximumRowsPerBlock": 299,
+      "maximumRowsTotal": 598,
+      "overflowPolicy": "error"
+    },
+    {
+      "sourceId": "missed-ultrasound",
+      "sourcePath": "/{farmId}/user/blueprint/blueprint_137584",
+      "sheet": "Заполняет конвертор НЕ ТРОГАТЬ!",
+      "ranges": [
+        "I144:M442",
+        "N144:R442"
+      ],
+      "write": "values-only",
+      "period": "none",
+      "includeHeader": false,
+      "rowMapping": "source-order",
+      "split": {
+        "mode": "halves",
+        "oddRow": "first-block",
+        "firstRange": "I144:M442",
+        "secondRange": "N144:R442"
+      },
+      "columnMapping": {
+        "mode": "source-order",
+        "sourceColumnCount": 5,
+        "firstTargetColumns": ["I", "J", "K", "L", "M"],
+        "secondTargetColumns": ["N", "O", "P", "Q", "R"]
+      },
+      "maximumRowsPerBlock": 299,
+      "maximumRowsTotal": 598,
+      "overflowPolicy": "error"
+    },
+    {
+      "sourceId": "missed-dry-off",
+      "sourcePath": "/{farmId}/user/blueprint/blueprint_137642",
+      "sheet": "Заполняет конвертор НЕ ТРОГАТЬ!",
+      "ranges": [
+        "U144:Y742",
+        "Z144:AD742"
+      ],
+      "write": "values-only",
+      "period": "none",
+      "includeHeader": false,
+      "rowMapping": "source-order",
+      "split": {
+        "mode": "halves",
+        "oddRow": "first-block",
+        "firstRange": "U144:Y742",
+        "secondRange": "Z144:AD742"
+      },
+      "columnMapping": [
+        { "sourceKind": "COW_IDENTIFIER", "sourceExample": "Номер животного", "targetColumns": ["U", "Z"] },
+        { "sourceKind": "DAYS_IN_PREGNANCY", "sourceExample": "Дни стельности", "targetColumns": ["V", "AA"] },
+        { "sourceKind": "CURRENT_LACTATION", "sourceExample": "Лактация", "targetColumns": ["W", "AB"] },
+        { "sourceKind": "COW_STATE", "sourceExample": "Статус", "targetColumns": ["X", "AC"] },
+        { "sourceKind": "PEN_GROUP_IDENTIFIER", "sourceExample": "Номер группы", "targetColumns": ["Y", "AD"] }
+      ],
+      "maximumRowsPerBlock": 599,
+      "maximumRowsTotal": 1198,
+      "overflowPolicy": "error"
+    }
+  ]
+}

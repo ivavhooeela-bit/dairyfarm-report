@@ -1,0 +1,635 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DairyFarm — сбор отчётов</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
+    :root {
+      font-family: Montserrat, Arial, sans-serif;
+      color: #0a0a0a;
+      background: #ebecec;
+      --dfs-yellow: #fdc71e;
+      --dfs-yellow-soft: #fdd86a;
+      --dfs-cream: #fff7d9;
+      --dfs-blue: #2a1b81;
+      --dfs-blue-mid: #505ca5;
+      --dfs-blue-soft: #d8def1;
+      --dfs-black: #0a0a0a;
+      --dfs-gray: #9d9e9e;
+      --dfs-gray-soft: #ebecec;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; padding: 30px 16px 48px; background: linear-gradient(145deg, #f8f8f8 0%, #ebecec 100%); }
+    main { width: min(1160px, 100%); margin: 0 auto; background: white; border-radius: 22px; padding: 0 34px 34px; box-shadow: 0 24px 70px #2a1b811c; overflow: hidden; border: 1px solid #ffffff; }
+    h1, h2 { margin: 0; }
+    h1 { font-size: clamp(25px, 3vw, 34px); color: var(--dfs-blue); font-weight: 800; letter-spacing: -.03em; }
+    h2 { font-size: 21px; color: var(--dfs-blue); font-weight: 800; }
+    p { color: #5c5c5c; line-height: 1.55; }
+    .top { position: relative; display: grid; grid-template-columns: 165px minmax(0, 1fr) auto; align-items: center; gap: 26px; margin: 0 -34px; padding: 25px 34px 30px; border-bottom: 5px solid var(--dfs-yellow); isolation: isolate; overflow: hidden; }
+    .top::after { content: ""; position: absolute; z-index: -1; width: 390px; height: 190px; right: -60px; bottom: -90px; background: url('/dfs-pattern-yellow.png') center bottom / cover no-repeat; opacity: .22; transform: rotate(-2deg); }
+    .brand-logo { width: 165px; height: auto; display: block; }
+    .top p { margin: 8px 0 0; max-width: 650px; }
+    .version { align-self: start; padding: 7px 11px; border-radius: 7px; background: var(--dfs-blue); color: white; font-size: 12px; font-weight: 800; box-shadow: 5px 5px 0 var(--dfs-yellow); }
+    .period { display: grid; grid-template-columns: 1fr 1fr auto; gap: 14px; align-items: end; margin: 28px 0; padding: 20px; border-radius: 14px; background: var(--dfs-cream); border-left: 5px solid var(--dfs-yellow); }
+    .google-panel { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 16px 20px; border: 1px solid var(--dfs-blue-soft); border-radius: 14px; background: #f7f8fd; }
+    .google-info { display: grid; gap: 4px; }
+    .google-info strong { color: var(--dfs-blue); }
+    .google-status { font-size: 13px; color: #626262; }
+    .google-status.connected { color: #237245; font-weight: 800; }
+    label { display: grid; gap: 7px; font-size: 13px; font-weight: 700; }
+    input { width: 100%; border: 1px solid #c7cae0; border-radius: 9px; padding: 11px 12px; font: inherit; background: white; color: var(--dfs-black); }
+    input:focus { outline: 3px solid #fdc71e55; border-color: var(--dfs-blue); }
+    button, .button { border: 0; border-radius: 9px; padding: 11px 16px; font: inherit; font-weight: 800; cursor: pointer; background: var(--dfs-yellow); color: var(--dfs-blue); text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 7px; box-shadow: 0 4px 0 #d9a600; transition: transform .15s ease, box-shadow .15s ease, background .15s ease; }
+    button:hover:not(:disabled), .button:hover { transform: translateY(-1px); box-shadow: 0 6px 0 #d9a600; }
+    button.secondary, .button.secondary { background: var(--dfs-blue); color: white; box-shadow: 0 4px 0 #160d51; }
+    button.secondary:hover:not(:disabled), .button.secondary:hover { box-shadow: 0 6px 0 #160d51; }
+    button.neutral, .button.neutral { background: var(--dfs-gray-soft); color: var(--dfs-blue); box-shadow: 0 4px 0 #cfd0d0; }
+    button.neutral:hover:not(:disabled), .button.neutral:hover { box-shadow: 0 6px 0 #cfd0d0; }
+    button.danger { background: #b43131; color: white; box-shadow: 0 4px 0 #761d1d; }
+    button.danger:hover:not(:disabled) { box-shadow: 0 6px 0 #761d1d; }
+    button.icon { padding: 8px 11px; font-size: 13px; }
+    button:disabled { opacity: .42; cursor: not-allowed; box-shadow: none; }
+    .section-head { display: flex; justify-content: space-between; align-items: center; gap: 14px; margin-bottom: 12px; }
+    .toolbar, .actions { display: flex; gap: 9px; flex-wrap: wrap; }
+    .base-list { border: 1px solid #d8def1; border-radius: 14px; overflow: hidden; box-shadow: 0 8px 24px #2a1b810d; }
+    .base-row { display: grid; grid-template-columns: 38px minmax(170px, .9fr) 72px minmax(180px, .8fr) minmax(430px, 1.5fr); gap: 12px; align-items: center; min-height: 72px; padding: 10px 14px; border-bottom: 1px solid #e3e6f3; }
+    .base-row:not(.header):hover { background: #fffdf5; }
+    .base-row:last-child { border-bottom: 0; }
+    .base-row.header { min-height: 44px; color: var(--dfs-blue); background: var(--dfs-blue-soft); font-size: 12px; font-weight: 800; }
+    .base-name { font-weight: 800; color: var(--dfs-black); }
+    .base-id { color: var(--dfs-blue-mid); font-weight: 700; }
+    .ready { color: var(--dfs-blue); font-weight: 800; }
+    .not-ready { color: #a6412d; font-weight: 700; }
+    .workbook-state { display: block; margin-top: 4px; color: #626262; font-size: 11px; font-weight: 600; }
+    .workflow-actions { display: flex; gap: 7px; flex-wrap: wrap; justify-content: flex-end; }
+    .workflow-actions button, .workflow-actions .button { padding: 8px 10px; font-size: 11px; }
+    .check { width: 19px; height: 19px; accent-color: var(--dfs-yellow); }
+    .run-panel { margin-top: 26px; padding-top: 22px; border-top: 2px solid var(--dfs-blue-soft); }
+    #run { font-size: 15px; }
+    pre { margin: 20px 0 0; min-height: 105px; padding: 18px 20px; border-radius: 12px; background: var(--dfs-blue); color: white; border-left: 6px solid var(--dfs-yellow); white-space: pre-wrap; overflow-wrap: anywhere; box-shadow: 0 9px 25px #2a1b8122; }
+    .downloads { display: grid; gap: 10px; margin-top: 15px; }
+    .download-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 13px 15px; border: 1px solid var(--dfs-blue-soft); border-left: 5px solid var(--dfs-yellow); border-radius: 11px; }
+    dialog { width: min(920px, calc(100% - 28px)); max-height: calc(100vh - 40px); border: 0; border-radius: 18px; padding: 0; box-shadow: 0 28px 90px #2a1b8155; border-top: 7px solid var(--dfs-yellow); }
+    dialog::backdrop { background: #2a1b817a; }
+    .dialog-body { padding: 24px; overflow: auto; max-height: calc(100vh - 40px); }
+    .dialog-head { display: flex; justify-content: space-between; gap: 15px; align-items: center; margin-bottom: 18px; }
+    .base-main-fields { display: grid; grid-template-columns: 160px 1fr; gap: 14px; }
+    .source-fields { display: grid; gap: 11px; margin-top: 20px; }
+    .source-fields label { grid-template-columns: 250px 1fr; align-items: center; }
+    .dialog-actions { position: sticky; bottom: -24px; display: flex; justify-content: flex-end; gap: 10px; margin: 20px -24px -24px; padding: 15px 24px; background: white; border-top: 1px solid var(--dfs-blue-soft); }
+    .empty { padding: 24px; color: var(--dfs-gray); text-align: center; }
+    .settings-panel { margin-top: 26px; border: 1px solid var(--dfs-blue-soft); border-radius: 14px; overflow: hidden; background: #fafbff; }
+    .settings-panel > summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 20px; color: var(--dfs-blue); font-weight: 800; cursor: pointer; list-style: none; }
+    .settings-panel > summary::-webkit-details-marker { display: none; }
+    .settings-panel > summary::after { content: "Раскрыть ▾"; font-size: 12px; color: var(--dfs-blue-mid); }
+    .settings-panel[open] > summary::after { content: "Скрыть ▴"; }
+    .settings-content { display: grid; gap: 14px; padding: 0 16px 16px; }
+    .settings-group { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 16px 20px; border: 1px solid var(--dfs-blue-soft); border-radius: 14px; background: white; }
+    .settings-group strong { color: var(--dfs-blue); }
+    .settings-group p { margin: 4px 0 0; font-size: 12px; }
+    @media (max-width: 800px) {
+      main { padding: 20px; }
+      .top { grid-template-columns: 110px minmax(0, 1fr); margin: -20px -20px 0; padding: 22px 20px 26px; }
+      .top::after { display: none; }
+      .brand-logo { width: 110px; }
+      .version { display: none; }
+      .period { grid-template-columns: 1fr 1fr; }
+      .period .login { grid-column: 1 / -1; }
+      .google-panel { align-items: stretch; flex-direction: column; }
+      .base-row { grid-template-columns: 32px 1fr 74px; }
+      .base-row > :nth-child(4), .base-row.header > :nth-child(4) { display: none; }
+      .base-row > :nth-child(5) { grid-column: 2 / -1; }
+      .workflow-actions { justify-content: flex-start; }
+      .settings-group { align-items: stretch; flex-direction: column; }
+      .source-fields label { grid-template-columns: 1fr; }
+      .base-main-fields { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="top">
+      <img class="brand-logo" src="/dfs-logo.png" alt="DFS Digifarm Software">
+      <div>
+        <h1>Еженедельные отчёты DairyFarm</h1>
+        <p>Выберите базы и единый период. Для каждой базы будет создан отдельный Excel и лог.</p>
+      </div>
+      <span class="version" id="version">v…</span>
+    </div>
+
+    <section class="period">
+      <label>Начало периода<input id="start" type="date" required></label>
+      <label>Конец периода<input id="end" type="date" required></label>
+      <button type="button" class="secondary login" id="login">Открыть вход DairyFarm</button>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <h2>Базы</h2>
+        <div class="toolbar">
+          <button type="button" class="secondary" id="select-all">Выбрать все</button>
+          <button type="button" class="secondary" id="add-base">Добавить базу</button>
+        </div>
+      </div>
+      <div class="base-list" id="base-list"></div>
+    </section>
+
+    <section class="run-panel">
+      <div class="actions">
+        <button type="button" id="run">Сформировать выбранные Excel</button>
+        <button type="button" class="danger" id="stop" disabled>Остановить выгрузку</button>
+      </div>
+      <pre id="status">Загружаю конфигурацию…</pre>
+      <div class="downloads" id="downloads"></div>
+    </section>
+
+    <details class="settings-panel" id="settings-panel">
+      <summary><span>Настройки</span></summary>
+      <div class="settings-content">
+        <section class="google-panel">
+          <div class="google-info">
+            <strong>Google Презентации</strong>
+            <span class="google-status" id="google-status">Проверяю подключение…</span>
+          </div>
+          <div class="toolbar">
+            <button type="button" class="neutral" id="google-import">Импорт OAuth JSON</button>
+            <input id="google-oauth-file" type="file" accept="application/json,.json" hidden>
+            <button type="button" class="secondary" id="google-connect" disabled>Подключить Google</button>
+            <button type="button" class="neutral" id="google-test" disabled>Проверить шаблон</button>
+            <button type="button" class="neutral" id="google-disconnect" disabled>Отключить</button>
+            <button type="button" class="secondary" id="google-run" disabled>Сформировать выбранные презентации заново</button>
+          </div>
+        </section>
+        <section class="settings-group">
+          <div><strong>Конфигурация баз</strong><p>Переносите названия и ссылки между компьютерами.</p></div>
+          <div class="toolbar">
+            <button type="button" class="neutral" id="export-config">Экспорт конфигурации</button>
+            <button type="button" class="neutral" id="import-config">Импорт конфигурации</button>
+            <input id="config-file" type="file" accept="application/json,.json" hidden>
+          </div>
+        </section>
+      </div>
+    </details>
+    <input id="base-workbook-file" type="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,.xlsx" hidden>
+  </main>
+
+  <dialog id="base-dialog">
+    <form class="dialog-body" id="base-form">
+      <div class="dialog-head">
+        <div><h2 id="dialog-title">Добавить базу</h2><p>Название попадёт в Excel и имя выходного файла.</p></div>
+        <button type="button" class="neutral icon" id="close-dialog">Закрыть</button>
+      </div>
+      <div class="base-main-fields">
+        <label>ID базы<input id="base-id" type="number" min="1" required></label>
+        <label>Название базы / отчёта<input id="base-name" type="text" maxlength="100" required></label>
+      </div>
+      <div class="source-fields" id="source-fields"></div>
+      <div class="dialog-actions">
+        <button type="button" class="neutral" id="cancel-base">Отмена</button>
+        <button type="submit">Сохранить базу</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script>
+    const state = { registry: { bases: [], sources: [] }, workbooks: {}, google: { configured: false, connected: false }, running: false, polling: null, uploadFarmId: null };
+    const status = document.querySelector("#status");
+    const runButton = document.querySelector("#run");
+    const googleRunButton = document.querySelector("#google-run");
+    const stopButton = document.querySelector("#stop");
+    const downloads = document.querySelector("#downloads");
+    const dialog = document.querySelector("#base-dialog");
+    const googleStatus = document.querySelector("#google-status");
+
+    async function request(url, options = {}) {
+      const response = await fetch(url, options);
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Ошибка запроса");
+      return data;
+    }
+
+    function jsonOptions(value) {
+      return { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(value) };
+    }
+
+    function selectedIds() {
+      return [...document.querySelectorAll(".base-select:checked")].map((input) => Number(input.dataset.id));
+    }
+
+    function renderBases() {
+      const list = document.querySelector("#base-list");
+      if (!state.registry.bases.length) {
+        list.innerHTML = '<div class="empty">Базы ещё не добавлены.</div>';
+        return;
+      }
+      list.innerHTML = `
+        <div class="base-row header"><span></span><span>Название</span><span>ID</span><span>Готовность</span><span>Действия</span></div>
+        ${state.registry.bases.map((base) => {
+          const ready = !base.missingLinks.length;
+          const workbook = state.workbooks[base.id] || { available: false };
+          const workbookText = workbook.available
+            ? workbook.source === "uploaded" ? "Загружен исправленный Excel" : "Excel собран и готов"
+            : "Excel ещё не подготовлен";
+          return `<div class="base-row">
+            <input class="check base-select" data-id="${base.id}" type="checkbox" ${base.enabled ? "checked" : ""} aria-label="Выбрать ${escapeHtml(base.name)}">
+            <span class="base-name">${escapeHtml(base.name)}</span>
+            <span class="base-id">${base.id}</span>
+            <span class="${ready ? "ready" : "not-ready"}">${ready ? "Все ссылки заполнены" : `Частичная выгрузка · не заполнено: ${base.missingLinks.length}`}<small class="workbook-state">${workbookText}</small></span>
+            <span class="workflow-actions">
+              <button type="button" class="secondary base-action collect-base-excel" data-id="${base.id}" ${state.running ? "disabled" : ""} title="${ready ? "Собрать полный Excel" : "Собрать Excel по заполненным ссылкам; пропуски попадут в лог"}">Выгрузить Excel</button>
+              ${workbook.available ? `<a class="button neutral" href="${workbook.downloadUrl}">Скачать Excel</a>` : ""}
+              <button type="button" class="neutral base-action upload-base-excel" data-id="${base.id}" ${state.running ? "disabled" : ""}>Загрузить правки</button>
+              <button type="button" class="base-action present-base-excel" data-id="${base.id}" ${state.running || !workbook.available || !state.google.connected ? "disabled" : ""} title="${!state.google.connected ? "Подключите Google в настройках" : !workbook.available ? "Сначала подготовьте Excel" : "Создать презентацию из Excel"}">Создать презентацию</button>
+              <button type="button" class="neutral icon edit-base" data-id="${base.id}" ${state.running ? "disabled" : ""}>Ссылки</button>
+              <button type="button" class="neutral icon delete-base" data-id="${base.id}" ${state.running ? "disabled" : ""}>Удалить</button>
+            </span>
+          </div>`;
+        }).join("")}`;
+    }
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"]/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[char]);
+    }
+
+    async function loadRegistry() {
+      state.registry = await request("/api/bases");
+      await loadWorkbookStatuses(false);
+      renderBases();
+    }
+
+    async function loadWorkbookStatuses(render = true) {
+      state.workbooks = (await request("/api/base-workbooks")).workbooks || {};
+      if (render) renderBases();
+    }
+
+    function renderGoogle(value) {
+      state.google = value;
+      googleStatus.classList.toggle("connected", value.connected);
+      googleStatus.textContent = value.connected
+        ? `Подключено${value.projectId ? ` · проект ${value.projectId}` : ""}`
+        : value.configured
+          ? "OAuth JSON импортирован, требуется вход в Google"
+          : "OAuth JSON ещё не импортирован";
+      document.querySelector("#google-connect").disabled = !value.configured || value.connected;
+      document.querySelector("#google-test").disabled = !value.connected;
+      document.querySelector("#google-disconnect").disabled = !value.connected;
+      googleRunButton.disabled = state.running || !value.connected;
+      renderBases();
+    }
+
+    async function loadGoogleStatus() {
+      renderGoogle(await request("/api/google/status"));
+    }
+
+    function openBaseDialog(base = null) {
+      document.querySelector("#dialog-title").textContent = base ? "Изменить базу" : "Добавить базу";
+      const idInput = document.querySelector("#base-id");
+      idInput.value = base?.id || "";
+      idInput.disabled = Boolean(base);
+      document.querySelector("#base-name").value = base?.name || "";
+      document.querySelector("#source-fields").innerHTML = state.registry.sources.map((source) => `
+        <label>${escapeHtml(source.label)}
+          <input type="url" data-source-id="${source.id}" value="${escapeHtml(base?.links?.[source.id] || "")}" placeholder="https://www.dairyfarm.dev/…" required>
+        </label>`).join("");
+      dialog.showModal();
+    }
+
+    function setRunning(value) {
+      state.running = value;
+      runButton.disabled = value;
+      googleRunButton.disabled = value || !state.google.connected;
+      stopButton.disabled = !value;
+      document.querySelectorAll(".base-action,.edit-base,.delete-base,#add-base,#import-config").forEach((element) => { element.disabled = value; });
+      if (!value) renderBases();
+    }
+
+    function renderRunStatus(runState) {
+      if (!runState.active) return;
+      const base = runState.currentBase ? `${runState.currentBase.name} (ID ${runState.currentBase.id})` : "подготовка";
+      const source = runState.currentSource ? `${runState.currentSource.id}: ${runState.currentSource.status}` : "ожидание источника";
+      const completed = runState.completed?.length || 0;
+      const prefix = runState.status === "stopping" ? "Останавливаю выгрузку…" : "Выгрузка выполняется…";
+      status.textContent = `${prefix}\nТекущая база: ${base}\nИсточник: ${source}\nЗавершено баз: ${completed}`;
+    }
+
+    async function pollStatus() {
+      try {
+        const current = await request("/api/run/status");
+        if (current.active) {
+          setRunning(true);
+          renderRunStatus(current);
+        } else if (state.running) {
+          setRunning(false);
+          clearInterval(state.polling);
+          state.polling = null;
+          status.textContent = current.status === "cancelled"
+            ? "Выгрузка остановлена. Готовые файлы доступны в папке outputs."
+            : "Выгрузка завершена. Готовые файлы доступны в папке outputs.";
+        }
+      } catch {
+        // Основной запрос покажет ошибку, если она возникла.
+      }
+    }
+
+    function renderResults(result) {
+      downloads.innerHTML = "";
+      for (const item of result.results || []) {
+        const row = document.createElement("div");
+        row.className = "download-row";
+        row.innerHTML = `<span><strong>${escapeHtml(item.baseName)}</strong><br><small>ID ${item.farmId}; источников: ${item.sources.length}; ошибок: ${item.errors.length}${item.cancelled ? "; остановлено" : ""}</small></span>
+          <span class="actions"><a class="button secondary" href="${item.downloadUrl}" download="${escapeHtml(item.fileName)}">Excel</a><a class="button neutral" href="${item.logDownloadUrl}" download="${escapeHtml(item.logFileName)}">Лог</a></span>`;
+        downloads.append(row);
+      }
+      const failures = (result.errors || []).map((item) => `• ${item.baseName} (ID ${item.farmId}): ${item.message}`);
+      const completed = (result.results || []).map((item) => `• ${item.baseName}: ${item.sources.length} источников, ${item.errors.length} ошибок сбора`);
+      status.textContent = `${result.cancelled ? "Выгрузка остановлена." : "Выгрузка завершена."}\n${completed.join("\n") || "Нет готовых файлов."}${failures.length ? `\n\nОшибки баз:\n${failures.join("\n")}` : ""}`;
+    }
+
+    function renderPresentationResults(result) {
+      downloads.innerHTML = "";
+      for (const item of result.results || []) {
+        const row = document.createElement("div");
+        row.className = "download-row";
+        row.innerHTML = `<span><strong>${escapeHtml(item.baseName)}</strong><br><small>ID ${item.farmId}; заполнены слайды ${item.presentation.filledSlides.join(", ")}; ошибок сбора: ${item.errors.length}; предупреждений: ${(item.presentation.warnings || []).length}</small></span>
+          <a class="button secondary" href="${item.presentation.url}" target="_blank" rel="noopener">Открыть презентацию</a>`;
+        downloads.append(row);
+      }
+      const failures = (result.errors || []).map((item) => `• ${item.baseName} (ID ${item.farmId}): ${item.message}`);
+      const completed = (result.results || []).map((item) => `• ${item.baseName}: Google-презентация создана`);
+      const warnings = (result.results || []).flatMap((item) => (item.presentation.warnings || []).map((message) => `• ${item.baseName}: ${message}`));
+      status.textContent = `${result.cancelled ? "Формирование остановлено." : "Google-презентации сформированы."}\n${completed.join("\n") || "Нет готовых презентаций."}${warnings.length ? `\n\nПредупреждения:\n${warnings.join("\n")}` : ""}${failures.length ? `\n\nОшибки:\n${failures.join("\n")}` : ""}`;
+    }
+
+    document.querySelector("#login").addEventListener("click", async () => {
+      try { status.textContent = (await request("/api/login", { method: "POST" })).message; }
+      catch (error) { status.textContent = `Ошибка: ${error.message}`; }
+    });
+
+    document.querySelector("#google-import").addEventListener("click", () => document.querySelector("#google-oauth-file").click());
+    document.querySelector("#google-oauth-file").addEventListener("change", async (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+      try {
+        renderGoogle(await request("/api/google/oauth/import", jsonOptions(JSON.parse(await file.text()))));
+        status.textContent = "OAuth JSON сохранён только на этом компьютере. Теперь нажмите «Подключить Google».";
+      } catch (error) { status.textContent = `Ошибка OAuth JSON: ${error.message}`; }
+      event.target.value = "";
+    });
+    document.querySelector("#google-connect").addEventListener("click", async () => {
+      try {
+        const result = await request("/api/google/connect", { method: "POST" });
+        window.open(result.authorizationUrl, "_blank", "noopener");
+        status.textContent = "Подтвердите доступ в открывшемся окне Google…";
+        const started = Date.now();
+        const timer = setInterval(async () => {
+          try {
+            const current = await request("/api/google/status");
+            renderGoogle(current);
+            if (current.connected || Date.now() - started > 10 * 60 * 1000) {
+              clearInterval(timer);
+              if (current.connected) status.textContent = "Google подключён. Можно проверить доступ к шаблону презентации.";
+            }
+          } catch { /* повторим проверку */ }
+        }, 1500);
+      } catch (error) { status.textContent = `Ошибка подключения Google: ${error.message}`; }
+    });
+    document.querySelector("#google-test").addEventListener("click", async () => {
+      try {
+        status.textContent = "Проверяю доступ к шаблону Google Slides…";
+        const result = await request("/api/google/test", { method: "POST" });
+        status.textContent = `Шаблон Google Slides доступен: «${result.title}», слайдов: ${result.slides}.`;
+      } catch (error) { status.textContent = `Ошибка проверки Google Slides: ${error.message}`; }
+    });
+    document.querySelector("#google-disconnect").addEventListener("click", async () => {
+      try {
+        renderGoogle(await request("/api/google/disconnect", { method: "POST" }));
+        status.textContent = "Локальный Google token удалён.";
+      } catch (error) { status.textContent = `Ошибка отключения Google: ${error.message}`; }
+    });
+
+    document.querySelector("#add-base").addEventListener("click", () => openBaseDialog());
+    document.querySelector("#close-dialog").addEventListener("click", () => dialog.close());
+    document.querySelector("#cancel-base").addEventListener("click", () => dialog.close());
+
+    document.querySelector("#base-list").addEventListener("click", async (event) => {
+      const collect = event.target.closest(".collect-base-excel");
+      if (collect) {
+        const farmId = Number(collect.dataset.id);
+        setRunning(true);
+        downloads.innerHTML = "";
+        status.textContent = `Собираю Excel для базы ${farmId}…`;
+        state.polling = setInterval(pollStatus, 1200);
+        try {
+          const result = await request("/api/run", jsonOptions({
+            farmId,
+            start: document.querySelector("#start").value,
+            end: document.querySelector("#end").value
+          }));
+          renderResults(result);
+          await loadWorkbookStatuses();
+          const item = result.results?.[0];
+          if (item?.downloadUrl) {
+            const link = document.createElement("a");
+            link.href = item.downloadUrl;
+            link.download = item.fileName || "dairyfarm-report.xlsx";
+            document.body.append(link);
+            link.click();
+            link.remove();
+          }
+        } catch (error) { status.textContent = `Ошибка выгрузки Excel: ${error.message}`; }
+        finally {
+          clearInterval(state.polling);
+          state.polling = null;
+          setRunning(false);
+        }
+        return;
+      }
+      const upload = event.target.closest(".upload-base-excel");
+      if (upload) {
+        state.uploadFarmId = Number(upload.dataset.id);
+        document.querySelector("#base-workbook-file").click();
+        return;
+      }
+      const present = event.target.closest(".present-base-excel");
+      if (present) {
+        const farmId = Number(present.dataset.id);
+        setRunning(true);
+        downloads.innerHTML = "";
+        status.textContent = `Создаю Google-презентацию для базы ${farmId} из Excel…`;
+        state.polling = setInterval(pollStatus, 1200);
+        try {
+          renderPresentationResults(await request("/api/google/presentations/from-workbook", jsonOptions({ farmId })));
+        } catch (error) { status.textContent = `Ошибка презентации из Excel: ${error.message}`; }
+        finally {
+          clearInterval(state.polling);
+          state.polling = null;
+          setRunning(false);
+        }
+        return;
+      }
+      const edit = event.target.closest(".edit-base");
+      if (edit) return openBaseDialog(state.registry.bases.find((base) => base.id === Number(edit.dataset.id)));
+      const remove = event.target.closest(".delete-base");
+      if (remove) {
+        const base = state.registry.bases.find((item) => item.id === Number(remove.dataset.id));
+        if (!confirm(`Удалить базу «${base.name}»?`)) return;
+        try {
+          state.registry = await request("/api/bases/delete", jsonOptions({ id: base.id }));
+          renderBases();
+        } catch (error) { status.textContent = `Ошибка: ${error.message}`; }
+      }
+    });
+
+    document.querySelector("#base-workbook-file").addEventListener("change", async (event) => {
+      const file = event.target.files[0];
+      const farmId = state.uploadFarmId;
+      event.target.value = "";
+      state.uploadFarmId = null;
+      if (!file || !farmId) return;
+      setRunning(true);
+      status.textContent = `Проверяю и сохраняю исправленный Excel для базы ${farmId}…`;
+      try {
+        const response = await fetch(`/api/base-workbook/upload?farmId=${encodeURIComponent(farmId)}`, {
+          method: "POST",
+          headers: { "content-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" },
+          body: file
+        });
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.error || "Не удалось загрузить Excel");
+        await loadWorkbookStatuses();
+        status.textContent = `Исправленный Excel для базы ${farmId} загружен. Теперь можно создать презентацию без повторной выгрузки DairyFarm.`;
+      } catch (error) { status.textContent = `Ошибка загрузки Excel: ${error.message}`; }
+      finally { setRunning(false); }
+    });
+
+    document.querySelector("#base-form").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const links = Object.fromEntries([...document.querySelectorAll("#source-fields [data-source-id]")].map((input) => [input.dataset.sourceId, input.value]));
+      try {
+        state.registry = await request("/api/bases", jsonOptions({ base: {
+          id: Number(document.querySelector("#base-id").value),
+          name: document.querySelector("#base-name").value,
+          enabled: true,
+          links
+        } }));
+        dialog.close();
+        renderBases();
+        status.textContent = "База сохранена.";
+      } catch (error) { status.textContent = `Ошибка сохранения базы: ${error.message}`; dialog.close(); }
+    });
+
+    document.querySelector("#select-all").addEventListener("click", () => {
+      const boxes = [...document.querySelectorAll(".base-select")];
+      const shouldSelect = boxes.some((box) => !box.checked);
+      boxes.forEach((box) => { box.checked = shouldSelect; });
+      document.querySelector("#select-all").textContent = shouldSelect ? "Снять выбор" : "Выбрать все";
+    });
+
+    document.querySelector("#import-config").addEventListener("click", () => document.querySelector("#config-file").click());
+    document.querySelector("#export-config").addEventListener("click", async () => {
+      try {
+        const response = await fetch("/api/config/export");
+        if (!response.ok) throw new Error("сервер не смог подготовить файл");
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(await response.blob());
+        link.download = "dairyfarm-bases.json";
+        document.body.append(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(link.href);
+        status.textContent = "Конфигурация экспортирована в файл dairyfarm-bases.json.";
+      } catch (error) {
+        status.textContent = "Локальный сервер не отвечает. Снова запустите «Запустить полный отчет.cmd» и повторите экспорт.";
+      }
+    });
+    document.querySelector("#config-file").addEventListener("change", async (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+      try {
+        const contents = await file.text();
+        if (!contents.trim()) {
+          throw new Error("выбранный JSON-файл пуст. Выберите заново сформированный файл конфигурации");
+        }
+        let imported;
+        try {
+          imported = JSON.parse(contents);
+        } catch (parseError) {
+          throw new Error(`JSON-файл повреждён или загружен не полностью (${parseError.message})`);
+        }
+        state.registry = await request("/api/config/import", jsonOptions(imported));
+        renderBases();
+        status.textContent = `Конфигурация импортирована. Баз: ${state.registry.bases.length}. Резервная копия прежнего списка сохранена.`;
+      } catch (error) { status.textContent = `Ошибка импорта: ${error.message}`; }
+      event.target.value = "";
+    });
+
+    runButton.addEventListener("click", async () => {
+      const farmIds = selectedIds();
+      if (!farmIds.length) { status.textContent = "Выберите хотя бы одну базу."; return; }
+      setRunning(true);
+      downloads.innerHTML = "";
+      status.textContent = "Запускаю выгрузку…";
+      state.polling = setInterval(pollStatus, 1200);
+      try {
+        await request("/api/bases/selection", jsonOptions({ farmIds }));
+        const result = await request("/api/run", jsonOptions({
+          farmIds,
+          start: document.querySelector("#start").value,
+          end: document.querySelector("#end").value
+        }));
+        renderResults(result);
+        await loadWorkbookStatuses();
+      } catch (error) { status.textContent = `Ошибка: ${error.message}`; }
+      finally {
+        clearInterval(state.polling);
+        state.polling = null;
+        setRunning(false);
+      }
+    });
+
+    googleRunButton.addEventListener("click", async () => {
+      const farmIds = selectedIds();
+      if (!farmIds.length) { status.textContent = "Выберите хотя бы одну базу."; return; }
+      setRunning(true);
+      downloads.innerHTML = "";
+      status.textContent = "Собираю данные для Google-презентаций…";
+      state.polling = setInterval(pollStatus, 1200);
+      try {
+        await request("/api/bases/selection", jsonOptions({ farmIds }));
+        const result = await request("/api/google/presentations/run", jsonOptions({
+          farmIds,
+          start: document.querySelector("#start").value,
+          end: document.querySelector("#end").value
+        }));
+        renderPresentationResults(result);
+      } catch (error) { status.textContent = `Ошибка Google-презентации: ${error.message}`; }
+      finally {
+        clearInterval(state.polling);
+        state.polling = null;
+        setRunning(false);
+      }
+    });
+
+    stopButton.addEventListener("click", async () => {
+      stopButton.disabled = true;
+      try { status.textContent = (await request("/api/stop", { method: "POST" })).message; }
+      catch (error) { status.textContent = `Ошибка остановки: ${error.message}`; }
+    });
+
+    Promise.all([request("/api/defaults"), loadRegistry(), request("/api/run/status"), loadGoogleStatus()]).then(([defaults, , runState]) => {
+      document.querySelector("#start").value = defaults.start;
+      document.querySelector("#end").value = defaults.end;
+      document.querySelector("#version").textContent = `v${defaults.appVersion}`;
+      if (runState.active) {
+        setRunning(true);
+        renderRunStatus(runState);
+        state.polling = setInterval(pollStatus, 1200);
+      } else {
+        status.textContent = "Конфигурация готова. Войдите в DairyFarm и запустите выбранные базы.";
+      }
+    }).catch((error) => { status.textContent = `Ошибка запуска: ${error.message}`; });
+  </script>
+</body>
+</html>

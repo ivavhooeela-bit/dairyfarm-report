@@ -1,0 +1,237 @@
+{
+  "version": 1,
+  "template": {
+    "presentationId": "1MiFN1hCARz8DT602mUgW9LR-EMKR9ETf4PWR8tKy0wk",
+    "sourceUrl": "https://docs.google.com/presentation/d/1MiFN1hCARz8DT602mUgW9LR-EMKR9ETf4PWR8tKy0wk/edit",
+    "copyBeforeFill": true,
+    "neverMutateSource": true
+  },
+  "output": {
+    "onePresentationPerBase": true,
+    "fileName": "{reportName}-{farmId}-{start}-{end}",
+    "chartTransport": "temporary-google-sheet",
+    "chartLinkingMode": "NOT_LINKED_IMAGE",
+    "removeTemporaryChartSheet": true
+  },
+  "nativeGoogleSlides": {
+    "controlSlides": {
+      "cover": {
+        "title": "p1_i5",
+        "subtitle": "p1_i13"
+      },
+      "kpi": {
+        "period": "p2_i61",
+        "values": {
+          "dnb": "p2_i18",
+          "milk": "p2_i22",
+          "cows": "p2_i24",
+          "heifers": "p2_i26",
+          "pregnant": "p2_i28",
+          "cr": "p2_i55",
+          "hdr": "p2_i56",
+          "pr": "p2_i57",
+          "earlyCull": "p2_i58",
+          "youngstockSurvival": "p2_i59",
+          "cullRate": "p2_i60",
+          "dim": "p2_i65"
+        }
+      },
+      "fullDeck": {
+        "weeklyTable": "p3_i4",
+        "cowSurvivalTable": "p5_i3",
+        "youngstockTable": "p6_i3",
+        "missedInseminationTables": ["p9_i3", "p9_i4", "p10_i2", "p10_i3"],
+        "missedInseminationTotal": "p10_i5",
+        "missedUltrasoundTables": ["p11_i3", "p11_i4"],
+        "missedUltrasoundTotal": "p11_i5",
+        "missedDryOffTables": ["p12_i3", "p12_i4"],
+        "missedDryOffTotal": "p12_i5",
+        "pagination": {
+          "missedInsemination": {
+            "sourcePageObjectId": "p10",
+            "tableTemplateIds": ["p10_i2", "p10_i3"],
+            "totalTemplateId": "p10_i5"
+          },
+          "missedUltrasound": {
+            "sourcePageObjectId": "p11",
+            "tableTemplateIds": ["p11_i3", "p11_i4"],
+            "totalTemplateId": "p11_i5"
+          },
+          "missedDryOff": {
+            "sourcePageObjectId": "p12",
+            "tableTemplateIds": ["p12_i3", "p12_i4"],
+            "totalTemplateId": "p12_i5"
+          }
+        },
+        "charts": {
+          "s3_dry_off": { "pageObjectId": "p3", "placeholderObjectId": "p3_i15", "cleanup": [5, 14] },
+          "s3_pregnancy": { "pageObjectId": "p3", "placeholderObjectId": "p3_i27", "cleanup": [16, 26] },
+          "s3_first_ai": { "pageObjectId": "p3", "placeholderObjectId": "p3_i44", "cleanup": [28, 43] },
+          "s3_second_ai": { "pageObjectId": "p3", "placeholderObjectId": "p3_i60", "cleanup": [45, 59] },
+          "s4_calving": { "pageObjectId": "p4", "placeholderObjectId": "p4_i24", "cleanup": [3, 23] },
+          "s4_ultrasound": { "pageObjectId": "p4", "placeholderObjectId": "p4_i35", "cleanup": [25, 34] },
+          "s4_calf_retirement": { "pageObjectId": "p4", "placeholderObjectId": "p4_i45", "cleanup": [36, 44] },
+          "s4_milk_deviation": { "pageObjectId": "p4", "placeholderObjectId": "p4_i114", "cleanup": [46, 113] },
+          "s4_early_retirement": { "pageObjectId": "p4", "placeholderObjectId": "p4_i129", "cleanup": [115, 128] },
+          "s5_cow_survival": { "pageObjectId": "p5", "placeholderObjectId": "p5_i99", "cleanup": [4, 98] },
+          "s6_youngstock": { "pageObjectId": "p6", "placeholderObjectId": "p6_i63", "cleanup": [4, 62] },
+          "s7_pregrate": { "pageObjectId": "p7", "placeholderObjectId": "p7_i66", "cleanup": [3, 65] },
+          "s8_milk_forecast": { "pageObjectId": "p8", "placeholderObjectId": "p8_i73", "cleanup": [3, 72] },
+          "s8_herd_forecast": { "pageObjectId": "p8", "placeholderObjectId": "p8_i144", "cleanup": [74, 143] }
+        }
+      }
+    }
+  },
+  "slides": [
+    {
+      "slide": 1,
+      "title": "Обложка",
+      "mode": "text-replacement",
+      "elements": [
+        { "tag": "{{REPORT_NAME}}", "value": "reportName" },
+        { "tag": "{{FARM_NAME}}", "value": "baseName" },
+        { "tag": "{{PERIOD}}", "value": "periodLabel" }
+      ]
+    },
+    {
+      "slide": 2,
+      "title": "Еженедельный отчёт — KPI",
+      "mode": "text-replacement",
+      "sources": ["monitor", "hdr-pr", "retirement-60-days-year", "youngstock-survival"],
+      "elements": [
+        { "tag": "{{PERIOD}}", "value": "periodLabel" },
+        { "tag": "{{COWS}}", "source": "monitor", "field": "Кол-во коров в стаде", "format": "integer" },
+        { "tag": "{{PREGNANT}}", "source": "monitor", "field": "% Стельных", "format": "percent0" },
+        { "tag": "{{HEIFERS}}", "source": "monitor", "field": "% Первотелок", "format": "percent0" },
+        { "tag": "{{DNB}}", "source": "monitor", "field": "Кол-во БРАК коровы", "format": "integer" },
+        { "tag": "{{MILK}}", "source": "monitor", "field": "Средний надой ДЗ", "format": "decimal1" },
+        { "tag": "{{DIM}}", "source": "monitor", "field": "Средние дни в доении (без сух.)", "format": "integer" },
+        { "tag": "{{HDR}}", "source": "hdr-pr", "field": "selected.HDR", "format": "percent0" },
+        { "tag": "{{PR}}", "source": "hdr-pr", "field": "selected.PR", "format": "percent0" },
+        { "tag": "{{CR}}", "source": "hdr-pr", "field": "selected.CR", "format": "percent0" },
+        { "tag": "{{EARLY_CULL}}", "source": "retirement-60-days-year", "transform": "retirement-rate", "format": "percent0" },
+        { "tag": "{{YOUNGSTOCK_SURVIVAL}}", "source": "youngstock-survival", "transform": "alive-div-total", "format": "percent0" },
+        { "tag": "{{CULL_RATE}}", "source": "monitor", "field": "% Брака коровы", "format": "percent0" }
+      ]
+    },
+    {
+      "slide": 3,
+      "title": "Выполнение технологической карты",
+      "mode": "mixed",
+      "sources": ["weekly-events", "sheet2-events-5303", "sheet2-events-5304", "first-insemination", "second-insemination"],
+      "elements": [
+        { "tag": "{{WEEKLY_EVENTS_TABLE}}", "kind": "table", "source": "weekly-events", "excludeTotalColumn": true },
+        { "tag": "{{PREGNANCY_CHART}}", "kind": "chart", "source": "sheet2-events-5303", "chart": "clustered-column" },
+        { "tag": "{{DRY_OFF_CHART}}", "kind": "chart", "source": "sheet2-events-5304", "chart": "column" },
+        { "tag": "{{FIRST_AI_CHART}}", "kind": "chart", "source": "first-insemination", "chart": "scatter", "x": "HDAT", "y": "DIMFB" },
+        { "tag": "{{SECOND_AI_CHART}}", "kind": "chart", "source": "second-insemination", "chart": "scatter", "x": "HDAT", "y": "DIMSB" }
+      ]
+    },
+    {
+      "slide": 4,
+      "title": "Результат за неделю",
+      "mode": "mixed",
+      "sources": ["calving-result", "sheet2-events-5303", "calf-retirement-6-months", "retirement-60-days-milking", "milk-deviation"],
+      "elements": [
+        { "tag": "{{CALVING_CHART}}", "kind": "chart", "source": "calving-result", "chart": "clustered-column" },
+        {
+          "tag": "{{ULTRASOUND_CHART}}",
+          "kind": "chart",
+          "source": "sheet2-events-5303",
+          "chart": "pie",
+          "transform": "pregnancy-status-share",
+          "categories": [
+            { "label": "Стельные", "sourceColumn": "Стельная", "aggregate": "sum" },
+            { "label": "Холостые", "sourceColumn": "Нестельная", "aggregate": "sum" }
+          ],
+          "value": "share-of-category-total",
+          "emptyPolicy": "show-zero"
+        },
+        { "tag": "{{CALF_RETIREMENT_CHART}}", "kind": "chart", "source": "calf-retirement-6-months", "chart": "line" },
+        { "tag": "{{MILK_DEVIATION_CHART}}", "kind": "chart", "source": "milk-deviation", "chart": "combo" },
+        { "tag": "{{EARLY_MILKING_RETIREMENT_CHART}}", "kind": "chart", "source": "retirement-60-days-milking", "chart": "line" }
+      ]
+    },
+    {
+      "slide": 5,
+      "title": "Сохранность коров до 60 дня доения",
+      "mode": "table-and-chart",
+      "sources": ["retirement-60-days-year"],
+      "elements": [
+        { "tag": "{{COW_SURVIVAL_TABLE}}", "kind": "table", "source": "retirement-60-days-year", "derivedColumns": ["retirement-total", "survival-rate"] },
+        { "tag": "{{COW_SURVIVAL_CHART}}", "kind": "chart", "source": "retirement-60-days-year", "chart": "combo", "derivedColumns": ["retirement-total", "survival-rate"] }
+      ]
+    },
+    {
+      "slide": 6,
+      "title": "Сохранность тёлок",
+      "mode": "table-and-chart",
+      "sources": ["youngstock-survival"],
+      "elements": [
+        { "tag": "{{YOUNGSTOCK_TABLE}}", "kind": "table", "source": "youngstock-survival", "derivedColumns": ["born-total", "alive", "survival-rate"] },
+        { "tag": "{{YOUNGSTOCK_CHART}}", "kind": "chart", "source": "youngstock-survival", "chart": "combo", "derivedColumns": ["born-total", "alive", "survival-rate"] }
+      ]
+    },
+    {
+      "slide": 7,
+      "title": "PREGRATE",
+      "mode": "chart-only",
+      "sources": ["hdr-pr"],
+      "period": "365-days-ending-user-end",
+      "completePeriodsOnly": true,
+      "elements": [
+        { "tag": "{{PREGRATE_CHART}}", "kind": "chart", "source": "hdr-pr", "chart": "combo", "series": ["HDR", "PR", "CR"] }
+      ]
+    },
+    {
+      "slide": 8,
+      "title": "Надой и прогноз",
+      "mode": "charts",
+      "sources": ["livestock-forecast-milk", "livestock-forecast-herd"],
+      "elements": [
+        { "tag": "{{MILK_FORECAST_CHART}}", "kind": "chart", "source": "livestock-forecast-milk", "chart": "combo", "derivedColumns": ["gross-milk-per-day"] },
+        { "tag": "{{HERD_FORECAST_CHART}}", "kind": "chart", "sources": ["livestock-forecast-milk", "livestock-forecast-herd"], "chart": "combo", "derivedColumns": ["gross-milk-per-day"] }
+      ]
+    },
+    {
+      "slide": 9,
+      "title": "Список пропущенных животных с ИО",
+      "mode": "paginated-list",
+      "sources": ["missed-insemination"],
+      "elements": [
+        { "tag": "{{MISSED_AI_TABLE}}", "kind": "table", "source": "missed-insemination", "columns": 4, "blocksPerSlide": 2, "overflow": "duplicate-continuation-slide" }
+      ]
+    },
+    {
+      "slide": 10,
+      "title": "Список пропущенных животных с ИО — продолжение",
+      "mode": "pagination-template",
+      "sources": ["missed-insemination"],
+      "continuationOf": 9
+    },
+    {
+      "slide": 11,
+      "title": "Список пропущенных животных на УЗИ",
+      "mode": "paginated-list",
+      "sources": ["missed-ultrasound"],
+      "elements": [
+        { "tag": "{{MISSED_ULTRASOUND_TABLE}}", "kind": "table", "source": "missed-ultrasound", "columns": 5, "blocksPerSlide": 2, "overflow": "duplicate-continuation-slide" }
+      ]
+    },
+    {
+      "slide": 12,
+      "title": "Список пропущенных животных на запуск",
+      "mode": "paginated-list",
+      "sources": ["missed-dry-off"],
+      "elements": [
+        { "tag": "{{MISSED_DRY_OFF_TABLE}}", "kind": "table", "source": "missed-dry-off", "columns": 5, "blocksPerSlide": 2, "overflow": "duplicate-continuation-slide" }
+      ]
+    },
+    {
+      "slide": 13,
+      "title": "Контакты",
+      "mode": "preserve",
+      "elements": []
+    }
+  ]
+}

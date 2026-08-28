@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "bases": [
+    {
+      "id": 1369,
+      "name": "КолоСС МТФ Рогожино 1-2",
+      "enabled": false,
+      "links": {
+        "monitor": "https://www.dairyfarm.dev/1369/user/analytics/monitor",
+        "hdr-pr": "https://www.dairyfarm.dev/1369/user/analytics/reproduction/hdr-and-pr/reproductionHdrPrReport_2204",
+        "weekly-events": "https://www.dairyfarm.dev/1369/user/analytics/events/events/customEventsReport_7118",
+        "sheet2-events-5303": "https://www.dairyfarm.dev/1369/user/analytics/events/events/customEventsReport_5303",
+        "sheet2-events-5304": "https://www.dairyfarm.dev/1369/user/analytics/events/events/customEventsReport_5304",
+        "first-insemination": "https://www.dairyfarm.dev/1369/user/blueprint/blueprint_154150",
+        "second-insemination": "https://www.dairyfarm.dev/1369/user/blueprint/blueprint_154149",
+        "calving-result": "https://www.dairyfarm.dev/1369/user/analytics/events/calvings/calvingEventsReport_2992",
+        "calf-retirement-6-months": "https://www.dairyfarm.dev/1369/user/analytics/events/events/customEventsReport_5305",
+        "retirement-60-days-year": "https://www.dairyfarm.dev/1369/user/analytics/events/events/customEventsReport_5306",
+        "retirement-60-days-milking": "https://www.dairyfarm.dev/1369/user/analytics/events/events/customEventsReport_5307",
+        "milk-deviation": "https://www.dairyfarm.dev/1369/user/analytics/milking/by-herd/customMilkingReport_4019",
+        "youngstock-survival": "https://www.dairyfarm.dev/1369/user/analytics/custom-reports/customReport_23732/zjeEcUenw7wmZ7Cm8W",
+        "livestock-forecast-milk": "https://www.dairyfarm.dev/1369/user/analytics/livestock-forecast?farmId=null",
+        "livestock-forecast-herd": "https://www.dairyfarm.dev/1369/user/analytics/livestock-forecast?farmId=null",
+        "missed-insemination": "https://www.dairyfarm.dev/1369/user/blueprint/blueprint_137585",
+        "missed-ultrasound": "https://www.dairyfarm.dev/1369/user/blueprint/blueprint_137584",
+        "missed-dry-off": "https://www.dairyfarm.dev/1369/user/blueprint/blueprint_137642"
+      }
+    },
+    {
+      "id": 617,
+      "name": "ОАО \"Утес\"",
+      "enabled": true,
+      "links": {
+        "monitor": "https://www.dairyfarm.dev/617/user/analytics/monitor",
+        "hdr-pr": "https://www.dairyfarm.dev/617/user/analytics/reproduction/hdr-and-pr/reproductionHdrPrReport_437",
+        "weekly-events": "https://www.dairyfarm.dev/617/user/analytics/events/events/customEventsReport_8073",
+        "sheet2-events-5303": "https://www.dairyfarm.dev/617/user/analytics/events/events/customEventsReport_8081",
+        "sheet2-events-5304": "https://www.dairyfarm.dev/617/user/analytics/events/events/customEventsReport_8082",
+        "first-insemination": "https://www.dairyfarm.dev/617/user/blueprint/blueprint_163324",
+        "second-insemination": "https://www.dairyfarm.dev/617/user/blueprint/blueprint_163325",
+        "calving-result": "https://www.dairyfarm.dev/617/user/analytics/events/calvings/calvingEventsReport_4318",
+        "calf-retirement-6-months": "https://www.dairyfarm.dev/617/user/analytics/events/events/customEventsReport_8083",
+        "retirement-60-days-year": "https://www.dairyfarm.dev/617/user/analytics/events/events/customEventsReport_8084",
+        "retirement-60-days-milking": "https://www.dairyfarm.dev/617/user/analytics/events/events/customEventsReport_8088",
+        "milk-deviation": "https://www.dairyfarm.dev/617/user/analytics/milking/by-herd/customMilkingReport_4425",
+        "youngstock-survival": "https://www.dairyfarm.dev/617/user/analytics/custom-reports/customReport_31063/7Suldae4DEo7CpQkWh",
+        "livestock-forecast-milk": "https://www.dairyfarm.dev/617/user/analytics/livestock-forecast?farmId=null",
+        "livestock-forecast-herd": "https://www.dairyfarm.dev/617/user/analytics/livestock-forecast?farmId=null",
+        "missed-insemination": "https://www.dairyfarm.dev/617/user/blueprint/blueprint_68376",
+        "missed-ultrasound": "https://www.dairyfarm.dev/617/user/blueprint/blueprint_68374",
+        "missed-dry-off": "https://www.dairyfarm.dev/617/user/blueprint/blueprint_68288"
+      }
+    }
+  ]
+}

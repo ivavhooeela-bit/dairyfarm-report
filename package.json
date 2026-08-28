@@ -1,0 +1,15 @@
+{
+  "name": "dairyfarm-report",
+  "version": "1.9.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "node --test",
+    "build:portable": "powershell -NoProfile -ExecutionPolicy Bypass -File ./build-portable.ps1"
+  },
+  "dependencies": {
+    "exceljs": "4.4.0",
+    "playwright": "1.62.1"
+  }
+}

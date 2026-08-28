@@ -1,0 +1,191 @@
+{
+  "farmId": 1369,
+  "name": "КолоСС МТФ Рогожино 1-2",
+  "sources": [
+    {
+      "id": "monitor",
+      "type": "monitor",
+      "url": "/1369/user/analytics/monitor",
+      "sheet": "Заполняет конвертор НЕ ТРОГАТЬ!",
+      "period": "latest-available",
+      "action": "none",
+      "metricSelection": "latest-available",
+      "metrics": [
+        "Кол-во коров в стаде",
+        "% Стельных",
+        "% Первотелок",
+        "Кол-во БРАК коровы",
+        "Средний надой ДЗ",
+        "Средние дни в доении (без сух.)",
+        "% Брака коровы"
+      ],
+      "transfer": "latest-value-by-label"
+    },
+    {
+      "id": "hdr-pr",
+      "type": "analytics-report",
+      "url": "/1369/user/analytics/reproduction/hdr-and-pr/reproductionHdrPrReport_2204",
+      "sheet": "HDR и PR   ",
+      "period": "365-days-ending-user-end",
+      "transfer": "all-rows-except-total"
+    },
+    {
+      "id": "weekly-events",
+      "type": "events-report",
+      "url": "/1369/user/analytics/events/events/customEventsReport_7118",
+      "sheet": "Заполняет конвертор НЕ ТРОГАТЬ!",
+      "period": "user",
+      "transfer": "all-columns-except-last"
+    },
+    {
+      "id": "sheet2-events-5303",
+      "type": "events-report",
+      "url": "/1369/user/analytics/events/events/customEventsReport_5303",
+      "sheet": "Заполняет конвертор НЕ ТРОГАТЬ!",
+      "period": "user",
+      "settingsArea": "table",
+      "transfer": "all-rows-except-total"
+    },
+    {
+      "id": "sheet2-events-5304",
+      "type": "events-report",
+      "url": "/1369/user/analytics/events/events/customEventsReport_5304",
+      "sheet": "Заполняет конвертор НЕ ТРОГАТЬ!",
+      "period": "user",
+      "settingsArea": "table",
+      "transfer": "all-rows-except-total"
+    },
+    {
+      "id": "first-insemination",
+      "type": "blueprint",
+      "url": "/1369/user/blueprint/blueprint_154150",
+      "sheet": "Заполняет конвертор НЕ ТРОГАТЬ!",
+      "period": "user",
+      "transfer": "full-table"
+    },
+    {
+      "id": "second-insemination",
+      "type": "blueprint",
+      "url": "/1369/user/blueprint/blueprint_154149",
+      "sheet": "Заполняет конвертор НЕ ТРОГАТЬ!",
+      "period": "user",
+      "transfer": "full-table"
+    },
+    {
+      "id": "calving-result",
+      "type": "calving-report",
+      "url": "/1369/user/analytics/events/calvings/calvingEventsReport_2992",
+      "sheet": "Заполняет конвертор НЕ ТРОГАТЬ!",
+      "period": "user",
+      "settingsArea": "table",
+      "transfer": "all-rows-except-total"
+    },
+    {
+      "id": "calf-retirement-6-months",
+      "type": "events-report",
+      "url": "/1369/user/analytics/events/events/customEventsReport_5305",
+      "sheet": "Заполняет конвертор НЕ ТРОГАТЬ!",
+      "period": "30-days-ending-user-end",
+      "settingsArea": "table",
+      "requiredGroupingField": "Дата выбытия",
+      "transfer": "all-rows-except-total"
+    },
+    {
+      "id": "retirement-60-days-year",
+      "type": "events-report",
+      "url": "/1369/user/analytics/events/events/customEventsReport_5306",
+      "sheet": "Заполняет конвертор НЕ ТРОГАТЬ!",
+      "period": "365-days-ending-user-end",
+      "settingsArea": "table",
+      "refreshAfterSettings": false,
+      "waitAfterSettingsMs": 8000,
+      "periodFailurePolicy": "use-current-table",
+      "transfer": "all-rows-except-total",
+      "rowSelection": "latest",
+      "rowLimit": 16
+    },
+    {
+      "id": "retirement-60-days-milking",
+      "type": "events-report",
+      "url": "/1369/user/analytics/events/events/customEventsReport_5307",
+      "sheet": "Заполняет конвертор НЕ ТРОГАТЬ!",
+      "period": "30-days-ending-user-end",
+      "settingsArea": "table",
+      "transfer": "all-rows-except-total"
+    },
+    {
+      "id": "milk-deviation",
+      "type": "milking-report",
+      "url": "/1369/user/analytics/milking/by-herd/customMilkingReport_4019",
+      "sheet": "Заполняет конвертор НЕ ТРОГАТЬ!",
+      "period": "12-days-ending-user-end",
+      "settingsArea": "table",
+      "transfer": "transpose-milking-daily"
+    },
+    {
+      "id": "youngstock-survival",
+      "type": "custom-report",
+      "url": "/1369/user/analytics/custom-reports/customReport_23732/zjeEcUenw7wmZ7Cm8W",
+      "reportId": "customReport_23732",
+      "name": "Сохранность телок за полгода",
+      "sheet": "Заполняет конвертор НЕ ТРОГАТЬ!",
+      "period": "report-defined",
+      "transfer": "pivot-rows-except-total",
+      "rowSelection": "latest",
+      "rowLimit": 6
+    },
+    {
+      "id": "livestock-forecast-milk",
+      "type": "livestock-forecast",
+      "url": "/1369/user/analytics/livestock-forecast?farmId=null",
+      "sheet": "Заполняет конвертор НЕ ТРОГАТЬ!",
+      "period": "report-defined",
+      "fields": {
+        "Дойные, всего": "Дойные, всего",
+        "Надой на голову, кг": "Надой на голову, кг"
+      },
+      "transfer": "mapped-12-months",
+      "rowLimit": 12
+    },
+    {
+      "id": "livestock-forecast-herd",
+      "type": "livestock-forecast",
+      "url": "/1369/user/analytics/livestock-forecast?farmId=null",
+      "sheet": "Заполняет конвертор НЕ ТРОГАТЬ!",
+      "period": "report-defined",
+      "fields": {
+        "Коровы": "Коровы"
+      },
+      "transfer": "mapped-12-months",
+      "rowLimit": 12
+    },
+    {
+      "id": "missed-insemination",
+      "type": "blueprint",
+      "url": "/1369/user/blueprint/blueprint_137585",
+      "sheet": "Заполняет конвертор НЕ ТРОГАТЬ!",
+      "period": "none",
+      "transfer": "full-table-split-halves",
+      "maximumRowsPerBlock": 299
+    },
+    {
+      "id": "missed-ultrasound",
+      "type": "blueprint",
+      "url": "/1369/user/blueprint/blueprint_137584",
+      "sheet": "Заполняет конвертор НЕ ТРОГАТЬ!",
+      "period": "none",
+      "transfer": "full-table-split-halves",
+      "maximumRowsPerBlock": 299
+    },
+    {
+      "id": "missed-dry-off",
+      "type": "blueprint",
+      "url": "/1369/user/blueprint/blueprint_137642",
+      "sheet": "Заполняет конвертор НЕ ТРОГАТЬ!",
+      "period": "none",
+      "transfer": "full-table-split-halves",
+      "maximumRowsPerBlock": 599
+    }
+  ],
+  "untouchedSheets": ["Проверка УЗИ"]
+}
